@@ -3,12 +3,15 @@ import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout title="Pokemon">
-  <form>
-    <input type="text" name="name" placeholder="Pokemon name" />
-    <button type="submit">Search</button>
-  </form>
-
-  <div id="pokemon-container"></div>
+  <main class="grid place-items-center mt-4">
+    <h1 class="text-white font-bold text-3xl my-4">Buscar un Pokemon</h1>
+    <form class="bg-white rounded-md p-4 shadow-lg">
+      <input type="text" name="name" placeholder="nombre del pokemon" />
+      <button type="submit">Buscar</button>
+    </form>
+    <div id="pokemon-container" class="bg-white rounded-md p-4 shadow-lg hidden mt-4"></div>
+    <div class="text-white mt-6">volver a la <a href="/">página principal</a></div>
+  </main>
 </Layout>
 <script>
   // handle search form submission
@@ -26,12 +29,10 @@ import Layout from '../layouts/Layout.astro';
         const pokemon = data.pokemonData
         const pokemonContainer = document.getElementById('pokemon-container') as HTMLDivElement;
         pokemonContainer.innerHTML = `
-          <h2>${pokemon.name}</h2>
-          <p>${pokemon.description}</p>
+          <h2 class="text-2xl font-bold">${pokemon.name}</h2>
           <img src="${pokemon.sprites.front_default}" alt="${pokemon.name}" />
-
-          <button>View Details</button>
         `;
+        pokemonContainer.classList.remove('hidden');
       })
       .catch((error) => {
         console.error(error);
