@@ -1,0 +1,40 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Pokemon">
+  <form>
+    <input type="text" name="name" placeholder="Pokemon name" />
+    <button type="submit">Search</button>
+  </form>
+
+  <div id="pokemon-container"></div>
+</Layout>
+<script>
+  // handle search form submission
+  const form = document.querySelector('form') as HTMLFormElement;
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const formData = new FormData(form);
+    const name = formData.get('name');
+    fetch(`/api/search/${name}`, {
+      method: 'POST'
+    })
+      .then((response) => response.json())
+      .then((data) => {
+
+        const pokemon = data.pokemonData
+        const pokemonContainer = document.getElementById('pokemon-container') as HTMLDivElement;
+        pokemonContainer.innerHTML = `
+          <h2>${pokemon.name}</h2>
+          <p>${pokemon.description}</p>
+          <img src="${pokemon.sprites.front_default}" alt="${pokemon.name}" />
+
+          <button>View Details</button>
+        `;
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  });
+</script>
